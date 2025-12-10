@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Lestari Nusantara menghubungkan energi terbarukan dengan kearifan lokal Indonesia untuk pembangunan berkelanjutan.">
+    <meta name="keywords" content="energi terbarukan, kearifan lokal, nusantara, lingkungan, budaya Indonesia, pembangkit listrik, biogas, PLTS, peta interaktif">
+    <title>Lestari Nusantara – Energi & Kearifan Lokal Indonesia</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <i class="fas fa-leaf"></i> Lestari Nusantara
+        </div>
+        <div class="menu" id="menu">
+            <a href="#home" class="active"><i class="fas fa-home"></i> Beranda</a>
+            <a href="#energi"><i class="fas fa-solar-panel"></i> Energi</a>
+            <a href="#kearifan"><i class="fas fa-hands"></i> Kearifan Lokal</a>
+            <a href="#peta-interaktif"><i class="fas fa-map-marked-alt"></i> Peta Nusantara</a>
+            <a href="#kontribusi"><i class="fas fa-hand-holding-heart"></i> Kontribusi</a>
+            <a href="#galeri"><i class="fas fa-images"></i> Galeri</a>
+            <a href="#tentang"><i class="fas fa-info-circle"></i> Tentang</a>
+        </div>
+        <div class="theme-toggle">
+            <button id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+        <button class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- HERO -->
+    <header id="home" class="hero">
+        <div class="overlay"></div>
+        <div class="hero-text">
+            <h1 class="animate-pop">Energi Bersih, Berakar pada Tradisi Nusantara</h1>
+            <p class="animate-slide-up">Menghubungkan teknologi energi terbarukan dengan kearifan budaya Indonesia untuk masa depan yang berkelanjutan.</p>
+            <button class="cta-button animate-fade-in" onclick="scrollToSection('peta-interaktif')">
+                <i class="fas fa-map"></i> Jelajahi Peta Nusantara
+            </button>
+            <div class="stats animate-fade-in-delay">
+                <div class="stat-item">
+                    <h3>127</h3>
+                    <p>Lokasi Proyek</p>
+                </div>
+                <div class="stat-item">
+                    <h3>48</h3>
+                    <p>Budaya Lokal</p>
+                </div>
+                <div class="stat-item">
+                    <h3>34</h3>
+                    <p>Provinsi</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down bounce"></i>
+        </div>
+    </header>
+
+    <!-- PETA INTERAKTIF UTAMA -->
+    <section id="peta-interaktif" class="section alt">
+        <div class="section-header">
+            <i class="fas fa-map-marked-alt section-icon"></i>
+            <h2>Peta Interaktif Nusantara</h2>
+            <p>Jelajahi sebaran proyek energi terbarukan dan kearifan lokal di seluruh Indonesia</p>
+        </div>
+        
+        <div class="map-controls">
+            <div class="map-filter">
+                <button class="map-filter-btn active" data-filter="all">
+                    <i class="fas fa-layer-group"></i> Semua
+                </button>
+                <button class="map-filter-btn" data-filter="energi">
+                    <i class="fas fa-bolt"></i> Energi
+                </button>
+                <button class="map-filter-btn" data-filter="kearifan">
+                    <i class="fas fa-seedling"></i> Kearifan
+                </button>
+                <button class="map-filter-btn" data-filter="aktif">
+                    <i class="fas fa-play-circle"></i> Aktif
+                </button>
+                <button class="map-filter-btn" data-filter="rencana">
+                    <i class="fas fa-calendar-alt"></i> Rencana
+                </button>
+            </div>
+            
+            <div class="map-search">
+                <input type="text" id="mapSearch" placeholder="Cari lokasi atau proyek...">
+                <button id="mapSearchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div id="indonesiaMap"></div>
+            
+            <div class="map-sidebar">
+                <div class="map-legend">
+                    <h4><i class="fas fa-key"></i> Legenda Peta</h4>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <span class="legend-marker energi-marker"></span>
+                            <span>Proyek Energi Terbarukan</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker kearifan-marker"></span>
+                            <span>Kearifan Lokal</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker aktif-marker"></span>
+                            <span>Proyek Aktif</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker rencana-marker"></span>
+                            <span>Dalam Perencanaan</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker besar-marker"></span>
+                            <span>Skala Besar</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker kecil-marker"></span>
+                            <span>Skala Kecil</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-stats">
+                    <h4><i class="fas fa-chart-bar"></i> Statistik</h4>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-number" id="totalProjects">0</div>
+                            <div class="stat-label">Total Proyek</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="activeProjects">0</div>
+                            <div class="stat-label">Aktif</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="energyProjects">0</div>
+                            <div class="stat-label">Energi</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="cultureProjects">0</div>
+                            <div class="stat-label">Kearifan</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="selected-info" id="selectedInfo">
+                    <h4><i class="fas fa-info-circle"></i> Info Lokasi</h4>
+                    <p>Klik salah satu marker di peta untuk melihat detail</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="province-list">
+            <h4><i class="fas fa-list"></i> Daftar Berdasarkan Provinsi</h4>
+            <div class="province-grid" id="provinceGrid">
+                <!-- Akan diisi oleh JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ENERGI TERBARUKAN -->
+    <section id="energi" class="section">
+        <div class="section-header">
+            <i class="fas fa-bolt section-icon"></i>
+            <h2>Energi Terbarukan di Nusantara</h2>
+            <p>Teknologi ramah lingkungan yang bersinergi dengan alam Indonesia</p>
+        </div>
+        <div class="search-filter">
+            <input type="text" id="searchEnergi" placeholder="Cari jenis energi..." onkeyup="filterCards('energi')">
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterByCategory('all', 'energi')">Semua</button>
+                <button class="filter-btn" onclick="filterByCategory('hidro', 'energi')">Hidro</button>
+                <button class="filter-btn" onclick="filterByCategory('surya', 'energi')">Surya</button>
+                <button class="filter-btn" onclick="filterByCategory('bio', 'energi')">Bio</button>
+                <button class="filter-btn" onclick="filterByCategory('angin', 'energi')">Angin</button>
+                <button class="filter-btn" onclick="filterByCategory('panas-bumi', 'energi')">Panas Bumi</button>
+            </div>
+        </div>
+        <div class="grid" id="energiList"></div>
+        <div class="load-more-container">
+            <button class="load-more" onclick="loadMore('energi')">
+                <i class="fas fa-plus"></i> Tampilkan Lebih Banyak
+            </button>
+        </div>
+    </section>
+
+    <!-- KEARIFAN LOKAL -->
+    <section id="kearifan" class="section alt">
+        <div class="section-header">
+            <i class="fas fa-seedling section-icon"></i>
+            <h2>Kearifan Lokal Indonesia</h2>
+            <p>Kebijaksanaan turun-temurun dalam menjaga kelestarian alam</p>
+        </div>
+        <div class="search-filter">
+            <input type="text" id="searchKearifan" placeholder="Cari kearifan lokal..." onkeyup="filterCards('kearifan')">
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterByCategory('all', 'kearifan')">Semua</button>
+                <button class="filter-btn" onclick="filterByCategory('hutan', 'kearifan')">Hutan</button>
+                <button class="filter-btn" onclick="filterByCategory('laut', 'kearifan')">Laut</button>
+                <button class="filter-btn" onclick="filterByCategory('pertanian', 'kearifan')">Pertanian</button>
+                <button class="filter-btn" onclick="filterByCategory('air', 'kearifan')">Air</button>
+                <button class="filter-btn" onclick="filterByCategory('adat', 'kearifan')">Adat</button>
+            </div>
+        </div>
+        <div class="grid" id="kearifanList"></div>
+        <div class="load-more-container">
+            <button class="load-more" onclick="loadMore('kearifan')">
+                <i class="fas fa-plus"></i> Tampilkan Lebih Banyak
+            </button>
+        </div>
+    </section>
+
+    <!-- BAGAIMANA BERKONTRIBUSI -->
+    <section id="kontribusi" class="section">
+        <div class="section-header">
+            <i class="fas fa-hand-holding-heart section-icon"></i>
+            <h2>Bagaimana Anda Dapat Berkontribusi?</h2>
+            <p>Bergabung dalam gerakan menjaga kelestarian Nusantara</p>
+        </div>
+        <div class="contribute-grid">
+            <div class="contribute-card">
+                <div class="contribute-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Laporkan Lokasi</h3>
+                <p>Berikan informasi lokasi potensi energi terbarukan atau kearifan lokal di daerah Anda</p>
+                <button class="contribute-btn" onclick="openReportModal()">Laporkan</button>
+            </div>
+            <div class="contribute-card">
+                <div class="contribute-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h3>Jadi Relawan</h3>
+                <p>Ikut serta dalam proyek energi terbarukan dan pelestarian budaya di desa-desa</p>
+                <button class="contribute-btn" onclick="openVolunteerModal()">Daftar</button>
+            </div>
+            <div class="contribute-card">
+                <div class="contribute-icon">
+                    <i class="fas fa-donate"></i>
+                </div>
+                <h3>Donasi</h3>
+                <p>Dukung pengadaan panel surya untuk sekolah dan puskesmas terpencil</p>
+                <button class="contribute-btn" onclick="openDonationModal()">Donasi</button>
+            </div>
+            <div class="contribute-card">
+                <div class="contribute-icon">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h3>Sebarkan</h3>
+                <p>Bagikan pengetahuan tentang energi terbarukan dan kearifan lokal</p>
+                <button class="contribute-btn" onclick="shareWebsite()">Bagikan</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERI -->
+    <section id="galeri" class="section alt">
+        <div class="section-header">
+            <i class="fas fa-images section-icon"></i>
+            <h2>Galeri Nusantara</h2>
+            <p>Keindahan alam dan budaya Indonesia dalam lensa</p>
+        </div>
+        <div class="gallery-controls">
+            <button class="gallery-filter active" data-filter="all">Semua</button>
+            <button class="gallery-filter" data-filter="energi">Energi</button>
+            <button class="gallery-filter" data-filter="kearifan">Kearifan</button>
+            <button class="gallery-filter" data-filter="alam">Alam</button>
+            <button class="gallery-filter" data-filter="masyarakat">Masyarakat</button>
+        </div>
+        <div class="gallery" id="imageGallery">
+            <!-- Gambar akan diisi oleh JavaScript -->
+        </div>
+        <div class="lightbox" id="lightbox">
+            <span class="close-lightbox">&times;</span>
+            <img id="lightbox-img" src="" alt="">
+            <div id="lightbox-caption"></div>
+            <button class="lightbox-nav prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="lightbox-nav next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- DATA & STATISTIK -->
+    <section id="data" class="section">
+        <div class="section-header">
+            <i class="fas fa-chart-line section-icon"></i>
+            <h2>Data & Statistik</h2>
+            <p>Perkembangan energi terbarukan dan pelestarian kearifan lokal di Indonesia</p>
+        </div>
+        <div class="charts-container">
+            <div class="chart-wrapper">
+                <h4><i class="fas fa-chart-pie"></i> Distribusi Jenis Energi</h4>
+                <canvas id="energyChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <h4><i class="fas fa-chart-bar"></i> Proyek per Provinsi (Top 10)</h4>
+                <canvas id="provinceChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <h4><i class="fas fa-calendar-alt"></i> Pertumbuhan Tahunan</h4>
+                <canvas id="growthChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <h4><i class="fas fa-users"></i> Dampak Sosial</h4>
+                <canvas id="impactChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="data-download">
+            <h4><i class="fas fa-download"></i> Unduh Data</h4>
+            <p>Akses data lengkap untuk penelitian dan pengembangan</p>
+            <div class="download-buttons">
+                <button class="download-btn" onclick="downloadData('energi')">
+                    <i class="fas fa-file-csv"></i> Data Energi (CSV)
+                </button>
+                <button class="download-btn" onclick="downloadData('kearifan')">
+                    <i class="fas fa-file-csv"></i> Data Kearifan (CSV)
+                </button>
+                <button class="download-btn" onclick="downloadData('peta')">
+                    <i class="fas fa-file-excel"></i> Data Peta (Excel)
+                </button>
+                <button class="download-btn" onclick="generateReport()">
+                    <i class="fas fa-file-pdf"></i> Laporan Lengkap (PDF)
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TENTANG & NEWSLETTER -->
+    <section id="tentang" class="section alt about">
+        <div class="about-content">
+            <div class="about-text">
+                <h2><i class="fas fa-info-circle"></i> Tentang Lestari Nusantara</h2>
+                <p>
+                    Lestari Nusantara adalah platform digital yang menghubungkan inovasi energi 
+                    terbarukan dengan kearifan lokal Indonesia. Kami percaya bahwa solusi 
+                    berkelanjutan terbaik berasal dari perpaduan teknologi modern dan kebijaksanaan tradisional.
+                </p>
+                <p>
+                    Dengan peta interaktif, database lengkap, dan sistem pelaporan partisipatif, 
+                    kami membangun jaringan kolaborasi antara pemerintah, komunitas, akademisi, 
+                    dan pelaku industri untuk percepatan transisi energi bersih di Indonesia.
+                </p>
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <h4>2018</h4>
+                        <p>Tahun Berdiri</p>
+                    </div>
+                    <div class="about-stat">
+                        <h4>34</h4>
+                        <p>Provinsi</p>
+                    </div>
+                    <div class="about-stat">
+                        <h4>500+</h4>
+                        <p>Relawan</p>
+                    </div>
+                    <div class="about-stat">
+                        <h4>50.000+</h4>
+                        <p>Penerima Manfaat</p>
+                    </div>
+                </div>
+            </div>
+            <div class="newsletter">
+                <h3><i class="fas fa-envelope"></i> Berlangganan Newsletter</h3>
+                <p>Dapatkan update terbaru tentang energi terbarukan, kearifan lokal, dan peluang partisipasi</p>
+                <form id="newsletterForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Nama Lengkap" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <select>
+                            <option value="">Pilih Minat</option>
+                            <option value="energi">Energi Terbarukan</option>
+                            <option value="kearifan">Kearifan Lokal</option>
+                            <option value="relawan">Kesukarelawanan</option>
+                            <option value="penelitian">Penelitian</option>
+                        </select>
+                    </div>
+                    <button type="submit">Berlangganan</button>
+                </form>
+                <div class="social-links">
+                    <h4>Ikuti Kami</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-leaf"></i> Lestari Nusantara</h3>
+                <p>Platform Kolaborasi Energi Terbarukan & Kearifan Lokal Indonesia</p>
+                <p>Membangun Indonesia berkelanjutan melalui sinergi teknologi dan tradisi.</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Tautan Cepat</h3>
+                <a href="#peta-interaktif"><i class="fas fa-map-marker-alt"></i> Peta Interaktif</a>
+                <a href="#energi"><i class="fas fa-bolt"></i> Energi Terbarukan</a>
+                <a href="#kearifan"><i class="fas fa-seedling"></i> Kearifan Lokal</a>
+                <a href="#data"><i class="fas fa-chart-bar"></i> Data & Statistik</a>
+                <a href="#kontribusi"><i class="fas fa-hand-holding-heart"></i> Berkontribusi</a>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-address-card"></i> Kontak</h3>
+                <p><i class="fas fa-envelope"></i> info@lestarinusantara.id</p>
+                <p><i class="fas fa-phone"></i> (021) 1234-5678</p>
+                <p><i class="fas fa-map-marker-alt"></i> Gedung Hijau Lestari, Jl. Energi Bersih No. 123, Jakarta</p>
+                <p><i class="fas fa-clock"></i> Senin-Jumat: 08:00-17:00 WIB</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-download"></i> Sumber Daya</h3>
+                <a href="#" onclick="downloadData('panduan')"><i class="fas fa-book"></i> Panduan Partisipasi</a>
+                <a href="#" onclick="downloadData('dataset')"><i class="fas fa-database"></i> Dataset Terbuka</a>
+                <a href="#" onclick="downloadData('toolkit')"><i class="fas fa-tools"></i> Toolkit Komunitas</a>
+                <a href="#" onclick="openResearchPortal()"><i class="fas fa-graduation-cap"></i> Portal Penelitian</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Lestari Nusantara | Harmoni Energi & Budaya | 
+                <a href="#" onclick="openPrivacyModal()">Kebijakan Privasi</a> | 
+                <a href="#" onclick="openTermsModal()">Syarat & Ketentuan</a>
+            </p>
+            <p class="footer-credit">Dikembangkan dengan <i class="fas fa-heart"></i> untuk Indonesia Berkelanjutan</p>
+        </div>
+    </footer>
+
+    <!-- Modal untuk Kontribusi -->
+    <div id="contributeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modalBody">
+                <!-- Konten modal akan diisi oleh JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Kembali ke atas">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Memuat data peta...</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
